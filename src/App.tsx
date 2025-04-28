@@ -25,7 +25,7 @@ const App: React.FC = () => {
       
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
-            <Route path="/blogsite" element={<BlogList />} />
+            <Route path="/blognest" element={<BlogList />} />
             <Route path="/blog/:id" element={<BlogDetail />} />
           </Routes>
         </Suspense>
