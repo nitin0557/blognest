@@ -33,7 +33,7 @@ const Header: React.FC = () => {
   return (
     <Navbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow">
       <Container>
-        <Navbar.Brand href="/blogsite" className="fw-bold">
+        <Navbar.Brand href="/blognest" className="fw-bold">
           BlogSite
         </Navbar.Brand>
 
