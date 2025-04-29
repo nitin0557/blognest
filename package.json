@@ -1,6 +1,6 @@
 {
   "name": "blog-website",
-  "homepage":"https://nitin0557.github.io/blognest",
+  "homepage": "https://nitin0557.github.io/blognest",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,15 +21,14 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.30.0",
     "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "webpack serve",
+    "build": "webpack",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build", 
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
@@ -49,5 +48,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^5.6.3",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.1"
   }
 }

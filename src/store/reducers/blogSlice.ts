@@ -28,7 +28,7 @@ const blogSlice = createSlice({
     addComment(state, action: PayloadAction<{ id: number; comment: string }>) {
       const blog = state.blogs.find((b) => b.id === action.payload.id);
       if (blog) {
-        blog.comments.push(action.payload.comment); // ✅ push a new comment string
+        blog.comments.push(action.payload.comment); 
       }
     },
     viewBlog(state, action: PayloadAction<number>) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { Navbar, Container, Form, FormControl } from 'react-bootstrap';
+import { Navbar, Container, Form, FormControl, Nav } from 'react-bootstrap';
 import { filterBlogs } from '../store/reducers/blogSlice';
 import { AppDispatch } from '../store';
 
@@ -37,17 +37,25 @@ const Header: React.FC = () => {
           BlogSite
         </Navbar.Brand>
 
-        <Form className="d-flex ms-auto" role="search">
-          <FormControl
-            type="search"
-            placeholder="Search blogs..."
-            className="me-2"
-            aria-label="Search"
-            value={searchTerm}
-            onChange={handleSearch}
-            autoComplete="off"
-          />
-        </Form>
+        <Navbar.Toggle aria-controls="navbar-nav" />
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="/blognest">Home</Nav.Link>
+            <Nav.Link href="/blognest">About</Nav.Link>
+          </Nav>
+
+          <Form className="d-flex" role="search">
+            <FormControl
+              type="search"
+              placeholder="Search blogs..."
+              className="me-2"
+              aria-label="Search"
+              value={searchTerm}
+              onChange={handleSearch}
+              autoComplete="off"
+            />
+          </Form>
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );

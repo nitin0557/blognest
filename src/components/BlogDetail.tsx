@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Card, Form } from 'react-bootstrap';
-import { addComment, editComment, deleteComment } from '../store/reducers/blogSlice'; // ⬅️ Import actions
+import { addComment, editComment, deleteComment } from '../store/reducers/blogSlice'; 
 import { AppDispatch, RootState } from '../store';
 import ShareModal from '../components/Modal';
 import "../style/BlogDetail.css";

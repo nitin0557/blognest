@@ -48,8 +48,7 @@ const BlogList: React.FC = () => {
         loadMore();
       }
     };
-
-    // Wait for blogs to render first
+    
     const timeout = setTimeout(checkHeight, 100);
 
     return () => clearTimeout(timeout);

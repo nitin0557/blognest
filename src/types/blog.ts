@@ -5,5 +5,5 @@ export interface Blog {
   imageUrl: string;
   likes: number;
   comments: string[];
-  views: number;  // Add this new field
+  views: number;
 }
