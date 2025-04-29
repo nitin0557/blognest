@@ -16,6 +16,13 @@
     min-width: 150px; 
   }
   
+  @media (max-width: 768px) {
+    .triple-dots {
+      left: auto;
+      right: 0;
+    }
+  }
+  
   .share {
     display: block;
     font-size: 14px;
