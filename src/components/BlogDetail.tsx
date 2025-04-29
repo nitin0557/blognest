@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Card, Form, Modal } from 'react-bootstrap';
-import { addComment } from '../store/reducers/blogSlice';
+import { Button, Card, Form } from 'react-bootstrap';
+import { addComment, editComment, deleteComment } from '../store/reducers/blogSlice'; // ⬅️ Import actions
 import { AppDispatch, RootState } from '../store';
-import "../style/BlogDetail.css"
+import ShareModal from '../components/Modal';
+import "../style/BlogDetail.css";
 
 const BlogDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,9 @@ const BlogDetail: React.FC = () => {
   const [newComment, setNewComment] = useState('');
   const [showModal, setShowModal] = useState(false);
 
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editedComment, setEditedComment] = useState('');
+
   const handleAddComment = useCallback(() => {
     if (!blog) return;
     const trimmedComment = newComment.trim();
@@ -25,12 +29,29 @@ const BlogDetail: React.FC = () => {
     }
   }, [dispatch, blog, newComment]);
 
+  const handleEdit = (index: number, comment: string) => {
+    setEditingIndex(index);
+    setEditedComment(comment);
+  };
+
+  const handleUpdateComment = () => {
+    if (blog && editedComment.trim() && editingIndex !== null) {
+      dispatch(editComment({ id: blog.id, index: editingIndex, updatedComment: editedComment }));
+      setEditingIndex(null);
+      setEditedComment('');
+    }
+  };
+
+  const handleDeleteComment = (index: number) => {
+    if (blog) {
+      dispatch(deleteComment({ id: blog.id, index }));
+    }
+  };
+
   const handleShare = useCallback(() => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      setShowModal(true);
-    }).catch(() => {
-      alert('Failed to copy URL.');
-    });
+    navigator.clipboard.writeText(window.location.href)
+      .then(() => setShowModal(true))
+      .catch(() => alert('Failed to copy URL.'));
   }, []);
 
   const handleCloseModal = useCallback(() => setShowModal(false), []);
@@ -47,7 +68,7 @@ const BlogDetail: React.FC = () => {
             variant="top"
             src={blog.imageUrl}
             alt={blog.title}
-            className='image-container'
+            className="image-container"
           />
         </div>
         <Card.Body>
@@ -62,9 +83,35 @@ const BlogDetail: React.FC = () => {
           <div className="mb-3">
             {blog.comments.length > 0 ? (
               blog.comments.map((comment, idx) => (
-                <p key={idx} className="border rounded p-2 my-2 bg-light">
-                  {comment}
-                </p>
+                <div key={idx} className="border rounded p-2 my-2 bg-light position-relative">
+                  {editingIndex === idx ? (
+                    <>
+                      <Form.Control
+                        type="text"
+                        value={editedComment}
+                        onChange={(e) => setEditedComment(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleUpdateComment();
+                          }
+                        }}
+                      />
+                      <div className="mt-2 d-flex gap-2">
+                        <Button variant="success" size="sm" onClick={handleUpdateComment}>Save</Button>
+                        <Button variant="secondary" size="sm" onClick={() => setEditingIndex(null)}>Cancel</Button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p className="mb-1">{comment}</p>
+                      <div className="position-absolute top-0 end-0 m-2 d-flex gap-1">
+                        <Button variant="outline-primary" size="sm" onClick={() => handleEdit(idx, comment)}>Edit</Button>
+                        <Button variant="outline-danger" size="sm" onClick={() => handleDeleteComment(idx)}>Delete</Button>
+                      </div>
+                    </>
+                  )}
+                </div>
               ))
             ) : (
               <p className="text-muted">No comments yet.</p>
@@ -91,19 +138,7 @@ const BlogDetail: React.FC = () => {
         </Card.Body>
       </Card>
 
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Blog URL Copied!</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          The blog link has been copied to your clipboard. Share it with your friends!
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <ShareModal show={showModal} onClose={handleCloseModal} url={window.location.href} />
     </>
   );
 };
